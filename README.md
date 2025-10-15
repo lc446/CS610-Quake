@@ -31,8 +31,9 @@ basedir (contains Dockerfile)
 ```
 #### Place your PAK files in \id1 like you would for a client installation of Quake
 
-The server config is in \id1
-Maps need to be in: \id1\maps
+The server config is in /id1
+
+Maps need to be in: /id1/maps
 
 Once your files are placed where they need to be, navigate to the base directory where the Dockerfile is.
 
