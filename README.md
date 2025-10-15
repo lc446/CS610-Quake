@@ -25,7 +25,7 @@ GOG: https://www.gog.com/en/game/quake_the_offering
 #### Before you run this image and create a container, you need to supply your pak1.pak (if you purchased Quake) and any custom maps you would like to load. 
 If you are loading a custom map, I highly recommend you modify the default server settings to load your map on launch.
 ```
-basedir (contains DOCKER file)
+basedir (contains Dockerfile)
 |-/id1 (pak files, and server config)
    |-/maps (your custom maps)
 ```
@@ -34,7 +34,7 @@ basedir (contains DOCKER file)
 The server config is in \id1
 Maps need to be in: \id1\maps
 
-Once your files are placed where they need to be, navigate to the base directory where the DOCKERFILE is.
+Once your files are placed where they need to be, navigate to the base directory where the Dockerfile is.
 
 #### Build the image:
 ```
