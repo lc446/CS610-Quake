@@ -3,13 +3,16 @@
 
 ## This is a Docker Quake Server with custom map loading!
 
-The server uses the [latest MVDSV](https://github.com/QW-Group/mvdsv/releases/latest/) and [latest ktx](https://github.com/QW-Group/ktx/releases/latest)
+The Docker server pulls the [latest MVDSV](https://github.com/QW-Group/mvdsv/releases/latest/) and [latest ktx](https://github.com/QW-Group/ktx/releases/latest)
 
 MVDSV is the actual server running, and KTX is what is used for the qwprogs.so file (game logic)
 
 Since it is **illegal to distribute the pak1 file** as that is owned by iD Software, this upload contains a LibreQuake pak0 and pak1 instead. 
 
-If you want to use the official, purchase Quake from a retailer such as Steam or GOG.
+[Latest LibreQuake can be found here.](https://github.com/lavenderdotpet/LibreQuake/releases/latest)
+It does NOT automatically pull new pak files if future LibreQuake releases come out.
+
+If you want to use the official pak files, purchase Quake from a storefront such as Steam or GOG.
 
 Steam: https://store.steampowered.com/app/2310/Quake/
 
