@@ -29,7 +29,7 @@ basedir (contains Dockerfile)
 |-/id1 (pak files, and server config)
    |-/maps (your custom maps)
 ```
-#### Place your PAK files in \id1 like you would for a client installation of Quake
+#### Place your PAK files in /id1 like you would for a client installation of Quake
 
 The server config is in /id1
 
