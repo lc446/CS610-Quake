@@ -46,7 +46,13 @@ docker build -t cs610quake .
 docker run -d -p 27500:27500/udp cs610quake
 ```
 
-To test your maps out, launch an ezQuake client and connect to localhost (the default port on a fresh install of ezQuake should already be 27500)
+To test your maps out, launch a QuakeWorld client (this was tested on ezQuake) and connect to localhost (the default port on a fresh install of ezQuake should already be 27500)
+
+You can do so by hitting the tilde key (~) to open the console, then run the command in ezQuake
+```
+connect localhost
+```
 
 Enjoy!
 
+![Lucca loaded into his server on a custom map](coolcubes-server.png)
