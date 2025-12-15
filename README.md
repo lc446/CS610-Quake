@@ -1,7 +1,7 @@
-# IT610-Midterm-Project
+# IT610-FINAL-Project
 ### Created by Lucca Cioffi
 
-## This is a Docker Quake Server with custom map loading!
+## This is a Docker Quake Server Cluster with custom map loading, and a website that displays the server information of each running instance.
 
 The Docker server pulls the [latest MVDSV](https://github.com/QW-Group/mvdsv/releases/latest/) and [latest ktx](https://github.com/QW-Group/ktx/releases/latest)
 
@@ -25,35 +25,52 @@ GOG: https://www.gog.com/en/game/quake_the_offering
 #### Before you run this image and create a container, you need to supply your pak1.pak (if you purchased Quake) and any custom maps you would like to load. 
 If you are loading a custom map, I highly recommend you modify the default server settings to load your map on launch.
 ```
-basedir (contains Dockerfile)
-|-/id1 (pak files, and server config)
-   |-/maps (your custom maps)
+basedir
+|-/game-server
+  |-/id1 (pak files, and server config)
+    |-/maps (drop your custom maps here)
+|-/kubernetes (contains deployment yaml)
+|-/web (contains python flask site program for site information display)
 ```
-#### Place your PAK files in /id1 like you would for a client installation of Quake
+#### Place your PAK files in /game-server/id1 like you would for a client installation of Quake
 
-The server config is in /id1
+The server config is in /game-server/id1
 
-Maps need to be in: /id1/maps
+Maps need to be in: /game-server/id1/maps
 
 Once your files are placed where they need to be, navigate to the base directory where the Dockerfile is.
 
-#### Build the image:
+#### Build the images from each directory:
 ```
-docker build -t cs610quake .
+docker build -t lucca/quake:latest .\gameserver
+
+docker build -t lucca/webstat:latest .\web
 ``` 
 
-#### Run the container using that image:
+#### Run the deployment:
 ```
-docker run -d -p 27500:27500/udp cs610quake
+kubectl apply -f kubernetes\deploywithweb.yaml
 ```
 
-To test your maps out, launch a QuakeWorld client (this was tested on ezQuake) and connect to localhost (the default port on a fresh install of ezQuake should already be 27500)
+To test your maps out, launch a QuakeWorld client (this was tested on ezQuake) and connect to the connection info the website status service displays.
+
+You can get this with the following command in Docker Desktop. The web service by default runs on the exposed port of 31000, so you would connect to http://127.0.0.1:31000/
+```
+kubectl get svc quake-status
+```
+
+By default, two servers (phobos and demios) are created. They expose their ports to 30000 and 30001 by default.
+This is because originally these were going to be connected to a LoadBalancer through services, before I pivoted to the website display page as something I could use while I develop more Quake maps.
 
 You can do so by hitting the tilde key (~) to open the console, then run the command in ezQuake
 ```
-connect localhost
+connect localhost:30000
 ```
+```
+connect localhost:30001
+```
+The status page auto-refreshes itself every 5 seconds, so you should then see a play having joined one of the servers! This makes them "live" updated, and if they are experiencing connection problems, they will display as red instead of green (i.e. when paused in Docker Desktop!)
 
-Enjoy!
+Enjoy and happy fragging!
 
 ![Lucca loaded into his server on a custom map](coolcubes-server.png)
