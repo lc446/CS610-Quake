@@ -1,0 +1,109 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quake-phobos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quake-phobos
+  template:
+    metadata:
+      labels:
+        app: quake-phobos
+    spec:
+      containers:
+      - name: quake-phobos
+        #So this crap doesnt pull from docker website
+        image: lucca/quake:latest
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quake-phobos
+spec:
+  type: NodePort
+  selector:
+    app: quake-phobos
+  ports:
+    - protocol: UDP
+      port: 27500
+      targetPort: 27500
+      nodePort: 30000
+
+#Quake server 2 starts here
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quake-deimos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quake-deimos
+  template:
+    metadata:
+      labels:
+        app: quake-deimos
+    spec:
+      containers:
+      - name: quake-deimos
+        image: lucca/quake:latest
+        imagePullPolicy: Never
+        args: ["/quake/server", "-port", "27501"]
+        ports:
+        - containerPort: 27501
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quake-deimos
+spec:
+  type: NodePort
+  selector:
+    app: quake-deimos
+  ports:
+    - protocol: UDP
+      port: 27501
+      targetPort: 27501
+      nodePort: 30001
+
+# WEBSTATUS SERVER
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quake-status
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quake-status
+  template:
+    metadata:
+      labels:
+        app: quake-status
+    spec:
+      containers:
+      - name: quake-status
+        image: lucca/webstat:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quake-status
+spec:
+  selector:
+    app: quake-status
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 31000
+  type: NodePort
