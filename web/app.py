@@ -12,28 +12,29 @@ TEMPLATE = """
 <!doctype html>
 <html>
 <head>
-  <title>K8 Quake Servers</title>
-  <meta http-equiv="refresh" content="5">
-  <style>
-    body { font-family: monospace; background:#111111; color:#eeeeee;}
-    .online { color: #00ff00; }
-    .offline { color: #ff0000; }
-  </style>
+    <title>K8 Quake Servers</title>
+    <meta http-equiv="refresh" content="5">
+    <style>
+        body { font-family: Consolas; background:#111111; color:#eeeeee;}
+        .online { color: #00ff00; }
+        .offline { color: #ff0000; }
+    </style>
 </head>
 <body>
-  <h1>Quake Servers</h1>
-  {% for s in servers %}
-    <h2>{{ s.name }}</h2>
-    <pre class="{{ 'offline' if 'no response' in s.output.lower() else 'online' }}">
+    <h1>Quake Servers</h1>
+    {% for s in servers %}
+        <h2>{{ s.name }}</h2>
+        <pre class="{{ 'offline' if 'no response' in s.output.lower() else 'online' }}">
 {{ s.output }}
-    </pre>
-  {% endfor %}
+        </pre>
+    {% endfor %}
 </body>
 </html>
 """
 
 def query_server(host, port):
     cmd = ["quakestat", "-qws", f"{host}:{port}"]
+    # stupid error checking
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, universal_newlines=True)
     except subprocess.CalledProcessError as e:
