@@ -38,7 +38,7 @@ The server config is in /game-server/id1
 
 Maps need to be in: /game-server/id1/maps
 
-Once your files are placed where they need to be, navigate to the base directory where the Dockerfile is.
+Once your files are placed where they need to be, navigate to the base directory where the Dockerfile is. You will need to rebuild the game server image if you have modified anything.
 
 #### Build the images from each directory:
 ```
@@ -54,22 +54,26 @@ kubectl apply -f kubernetes\deploywithweb.yaml
 
 To test your maps out, launch a QuakeWorld client (this was tested on ezQuake) and connect to the connection info the website status service displays.
 
-You can get this with the following command in Docker Desktop. The web service by default runs on the exposed port of 31000, so you would connect to http://127.0.0.1:31000/
+You can get this with the following command in Docker Desktop. 
 ```
 kubectl get svc quake-status
 ```
 
-By default, two servers (phobos and demios) are created. They expose their ports to 30000 and 30001 by default.
+The web service by default runs on the exposed port of 31000 on the host kubernetes machine (5000 in the cluster itself), so you would connect to http://127.0.0.1:31000/ in your web browser.
+
+
+By default, two servers (phobos and demios) are created. They expose their ports to 30000 and 30001 by default on the host (27500 and 27501 in the cluster itself).
 This is because originally these were going to be connected to a LoadBalancer through services, before I pivoted to the website display page as something I could use while I develop more Quake maps.
 
 You can do so by hitting the tilde key (~) to open the console, then run the command in ezQuake
 ```
 connect localhost:30000
 ```
+OR
 ```
 connect localhost:30001
 ```
-The status page auto-refreshes itself every 5 seconds, so you should then see a play having joined one of the servers! This makes them "live" updated, and if they are experiencing connection problems, they will display as red instead of green (i.e. when paused in Docker Desktop!)
+The status page auto-refreshes itself every 5 seconds, so you should then see a play having joined one of the servers! This makes them "live" updated, and if they are experiencing connection problems, they will display as red instead of green (i.e. when paused in Docker Desktop!) You could adjust this through the app.py in the web folder. You will need to rebuild the webstat image if you do so.
 
 Enjoy and happy fragging!
 
